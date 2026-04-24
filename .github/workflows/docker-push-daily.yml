@@ -1,7 +1,6 @@
 name: nightly and on.push docker builds
 
 on:
-  # to trigger manually if we really need it
   workflow_dispatch:
     inputs:
       tag_name:
@@ -9,20 +8,20 @@ on:
         type: "string"
         required: true
 
-  # to trigger
   push:
-    tags-ignore:
-      - "bitwarden-eso-provider-*"
+    branches:
+      - main
     paths:
       - docker/**
 
   schedule:
-    # * is a special character in YAML so you have to quote this string
-    # triggers every day at 00:00 UTC (midnight)
-    - cron:  '0 0 * * *'
+    - cron: '0 0 * * *'
+
+env:
+  IMAGE: harbor.vaderrp.com/operinko-labs/bweso
 
 jobs:
-  docker-amd64:
+  docker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -38,49 +37,29 @@ jobs:
       - name: Login to Harbor
         uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.HARBOR_URL }}
+          registry: harbor.vaderrp.com
           username: ${{ secrets.HARBOR_USERNAME }}
           password: ${{ secrets.HARBOR_PASSWORD }}
 
-      - name: Docker Build and Push
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          # build from the ./docker directory in this repo
-          context: docker
-          platforms: |
-            linux/amd64
-          tags: |
-            ${{ secrets.HARBOR_REPOSITORY }}:${{ inputs.tag_name }}
+      - name: Determine tag
+        id: tag
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "tags=${{ env.IMAGE }}:${{ inputs.tag_name }}" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.event_name }}" == "schedule" ]]; then
+            LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "latest")
+            echo "tags=${{ env.IMAGE }}:nightly,${{ env.IMAGE }}:${LAST_TAG}" >> "$GITHUB_OUTPUT"
+          else
+            SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+            echo "tags=${{ env.IMAGE }}:latest,${{ env.IMAGE }}:sha-${SHA}" >> "$GITHUB_OUTPUT"
+          fi
 
-      # push with ref_name if
       - name: Docker Build and Push
-        if: ${{ github.event_name != 'workflow_dispatch' && github.event_name != 'schedule' }}
         uses: docker/build-push-action@v6
         with:
           push: true
-          # build from the ./docker directory in this repo
           context: docker
           platforms: |
             linux/amd64
             linux/arm64
-          tags: |
-            ${{ secrets.HARBOR_REPOSITORY }}:${{ github.ref_name }}
-
-      - name: Get most recent tag
-        if: ${{ github.event_name == 'schedule' }}
-        run: echo "last_tag=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
-
-      - name: Docker Build and Push
-        if: ${{ github.event_name == 'schedule' }}
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          # build from the ./docker directory in this repo
-          context: docker
-          platforms: |
-            linux/amd64
-          tags: |
-            ${{ secrets.HARBOR_REPOSITORY }}:nightly
-            ${{ secrets.HARBOR_REPOSITORY }}:${{ env.last_tag }}
+          tags: ${{ steps.tag.outputs.tags }}
