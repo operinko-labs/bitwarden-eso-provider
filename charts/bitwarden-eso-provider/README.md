@@ -8,8 +8,7 @@ Helm chart to use Bitwarden as a Provider for External Secrets Operator
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| cloudymax | <emax@cloudydev.net> | <https://github.com/cloudymax/> |
-| jessebot | <jessebot@linux.com> | <https://github.com/jessebot/> |
+| operinko | <olli.erinko@gmail.com> | <https://github.com/operinko/> |
 
 ## Values
 
