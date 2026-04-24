@@ -9,30 +9,26 @@ on:
 
 jobs:
   release:
-    environment: helm-release
+    runs-on: ubuntu-latest
     permissions:
       contents: write
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-
-      - name: Configure Git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Install Helm
         uses: azure/setup-helm@v3.5
-        id: helm-install
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run chart-releaser
-        id: helm-release
-        uses: helm/chart-releaser-action@v1.7.0
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          CR_GENERATE_RELEASE_NOTES: true
+      - name: Login to Harbor OCI
+        run: |
+          echo "${{ secrets.HARBOR_PASSWORD }}" | helm registry login harbor.vaderrp.com \
+            --username "${{ secrets.HARBOR_USERNAME }}" \
+            --password-stdin
+
+      - name: Package and push chart
+        run: |
+          helm package charts/bitwarden-eso-provider
+          CHART_PKG=$(ls bitwarden-eso-provider-*.tgz)
+          helm push "$CHART_PKG" oci://harbor.vaderrp.com/operinko-labs
