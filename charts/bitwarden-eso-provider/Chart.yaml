@@ -21,10 +21,6 @@ version: 1.3.0
 appVersion: 1.5.0
 
 maintainers:
-  - name: "cloudymax"
-    email: "emax@cloudydev.net"
-    url: "https://github.com/cloudymax/"
-
-  - name: "jessebot"
-    email: "jessebot@linux.com"
-    url: "https://github.com/jessebot/"
+  - name: "operinko"
+    email: "olli.erinko@gmail.com"
+    url: "https://github.com/operinko/"
