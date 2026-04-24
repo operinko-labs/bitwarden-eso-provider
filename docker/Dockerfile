@@ -1,5 +1,6 @@
 FROM debian:13.1
 
+# BW CLI 2026.4.1
 ENV BW_CLI_VERSION=2026.4.1
 
 RUN apt-get update && \
