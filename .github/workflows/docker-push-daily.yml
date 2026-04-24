@@ -26,6 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -41,7 +43,7 @@ jobs:
           password: ${{ secrets.HARBOR_PASSWORD }}
 
       - name: Docker Build and Push
-        if: ${{ github.event == 'workflow_dispatch' }}
+        if: ${{ github.event_name == 'workflow_dispatch' }}
         uses: docker/build-push-action@v6
         with:
           push: true
@@ -50,11 +52,11 @@ jobs:
           platforms: |
             linux/amd64
           tags: |
-            ${{ secrets.HARBOR_URL }}/bweso:${{ inputs.tag_name }}
+            ${{ secrets.HARBOR_REPOSITORY }}:${{ inputs.tag_name }}
 
       # push with ref_name if
       - name: Docker Build and Push
-        if: ${{ github.event != 'workflow_dispatch' && github.event != 'schedule' }}
+        if: ${{ github.event_name != 'workflow_dispatch' && github.event_name != 'schedule' }}
         uses: docker/build-push-action@v6
         with:
           push: true
@@ -64,14 +66,14 @@ jobs:
             linux/amd64
             linux/arm64
           tags: |
-            ${{ secrets.HARBOR_URL }}/bweso:${{ github.ref_name }}
+            ${{ secrets.HARBOR_REPOSITORY }}:${{ github.ref_name }}
 
       - name: Get most recent tag
-        if: ${{ github.event == 'schedule' }}
+        if: ${{ github.event_name == 'schedule' }}
         run: echo "last_tag=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
 
       - name: Docker Build and Push
-        if: ${{ github.event == 'schedule' }}
+        if: ${{ github.event_name == 'schedule' }}
         uses: docker/build-push-action@v6
         with:
           push: true
@@ -80,5 +82,5 @@ jobs:
           platforms: |
             linux/amd64
           tags: |
-            ${{ secrets.HARBOR_URL }}/bweso:nightly
-            ${{ secrets.HARBOR_URL }}/bweso:${{ env.last_tag }}
+            ${{ secrets.HARBOR_REPOSITORY }}:nightly
+            ${{ secrets.HARBOR_REPOSITORY }}:${{ env.last_tag }}
