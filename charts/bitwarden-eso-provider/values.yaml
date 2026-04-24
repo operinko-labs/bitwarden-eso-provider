@@ -6,8 +6,8 @@
 replicaCount: 1
 
 image:
-  # -- Overrides the image repository
-  repository: jessebot/bweso
+  # -- Image repository path in the container registry, in the format <registry-host>/<project>/<repository>, e.g. harbor.example.com/myproject/bweso
+  repository: harbor.example.com/myproject/bweso
   # -- Overrides the image pullPolicy. Hint: set to Always if using latest tag
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
