@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: Docker Build and Push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           push: true
           context: docker
