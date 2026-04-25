@@ -17,7 +17,7 @@ type: application
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 1.4.0
 
-# renovate: image=operinko-labs/bweso
+# renovate: image=harbor.vaderrp.com/operinko-labs/bweso
 appVersion: 2026.4.1
 
 maintainers:

@@ -4,6 +4,12 @@
   "extends": [
         "config:recommended"
   ],
+  "hostRules": [
+    {
+      "matchHost": "harbor.vaderrp.com",
+      "hostType": "docker"
+    }
+  ],
   "customManagers": [
         {
             "customType": "regex",
