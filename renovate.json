@@ -14,7 +14,9 @@
         {
             "customType": "regex",
             "description": "Update BW_CLI_VERSION in Dockerfile",
-            "fileMatch": ["(^|/)Dockerfile$"],
+            "managerFilePatterns": [
+                    "/(^|/)Dockerfile$/"
+              ],
             "matchStrings": ["ENV BW_CLI_VERSION=(?<currentValue>.*?)\\n"],
             "depNameTemplate": "@bitwarden/cli",
             "datasourceTemplate": "npm"
@@ -23,7 +25,9 @@
             "customType": "regex",
             "datasourceTemplate": "docker",
             "description": "Update helm chart appVersion",
-            "fileMatch": ["(^|/)Chart\\.yaml$"],
+            "managerFilePatterns": [
+                    "/(^|/)Chart\\.yaml$/"
+              ],
             "matchStrings": [
                 "#\\s?renovate: image=(?<depName>.*?)\\s?appVersion:\\s?\\\"?(?<currentValue>[\\w+\\.\\-]*)"
             ]
@@ -55,7 +59,7 @@
         },
       {
             "description": "Bump helm chart versions by a patch when updating values files. This can be removed when https://github.com/renovatebot/renovate/issues/8231 is implemented and enabled.",
-        "matchManagers": ["helm-values", "regex"],
+        "matchManagers": ["helm-values","custom.regex"],
         "matchFileNames": ["**/Chart.yaml"],
         "postUpgradeTasks": {
           "commands": [
