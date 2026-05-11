@@ -19,7 +19,7 @@ on:
 
 env:
   REGISTRY: harbor.vaderrp.com
-  IMAGE: harbor.vaderrp.com/operinko-labs/bweso
+  IMAGE: operinko-labs/bweso
 
 jobs:
   docker:
@@ -74,5 +74,6 @@ jobs:
       - name: Push image
         uses: redhat-actions/push-to-registry@5ed88d269cf581ea9ef6dd6806d01562096bee9c # v2.8
         with:
+          registry: ${{ env.REGISTRY }}
           image: ${{ steps.build.outputs.image }}
           tags: ${{ steps.build.outputs.tags }}
