@@ -18,11 +18,11 @@ on:
     - cron: '0 0 * * *'
 
 env:
-  IMAGE: harbor.vaderrp.com/operinko-labs/bweso
+  IMAGE: harbor.storage.svc.cluster.local/operinko-labs/bweso
 
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    runs-on: org-runner
     steps:
       - uses: actions/checkout@v5
         with:
