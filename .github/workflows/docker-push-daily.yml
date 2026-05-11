@@ -18,8 +18,8 @@ on:
     - cron: '0 0 * * *'
 
 env:
-  REGISTRY: harbor.storage.svc.cluster.local
-  IMAGE: harbor.storage.svc.cluster.local/operinko-labs/bweso
+  REGISTRY: harbor.vaderrp.com
+  IMAGE: harbor.vaderrp.com/operinko-labs/bweso
 
 jobs:
   docker:
