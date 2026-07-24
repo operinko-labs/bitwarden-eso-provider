@@ -1,7 +1,7 @@
 FROM debian:13.1
 
 # BW CLI 2026.4.1
-ENV BW_CLI_VERSION=2026.4.1
+ENV BW_CLI_VERSION=2026.7.0
 
 RUN apt-get update && \
     apt list --upgradeable | grep security | cut -f1 -d '/' | xargs apt-get install --no-install-recommends -y && \
