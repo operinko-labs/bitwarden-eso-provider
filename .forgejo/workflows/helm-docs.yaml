@@ -6,11 +6,6 @@ on:
       - 'charts/bitwarden-eso-provider/Chart.yaml'
       - 'charts/bitwarden-eso-provider/values.yaml'
 
-permissions:
-  contents: write
-  pull-requests: write
-  deployments: read
-
 jobs:
   update-docs:
     name: update-docs
