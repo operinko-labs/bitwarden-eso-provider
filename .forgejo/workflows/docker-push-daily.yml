@@ -41,9 +41,13 @@ jobs:
 
       - name: Determine tag
         id: tag
+        env:
+          # dispatch input is free text; pass via env (quoted) rather than
+          # interpolating into the script to avoid shell injection
+          TAG_NAME: ${{ inputs.tag_name }}
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "tags=${{ inputs.tag_name }}" >> "$GITHUB_OUTPUT"
+            echo "tags=${TAG_NAME}" >> "$GITHUB_OUTPUT"
           elif [[ "${{ github.event_name }}" == "schedule" ]]; then
             LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "latest")
             echo "tags=nightly ${LAST_TAG}" >> "$GITHUB_OUTPUT"
