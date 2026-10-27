@@ -21,4 +21,6 @@ export BW_SESSION=$(bw unlock --passwordenv BW_PASSWORD --raw)
 bw unlock --check
 
 echo 'Running `bw server` on port 8087'
-bw serve --hostname 0.0.0.0 #--disable-origin-protection
+# `all`: bind every interface and skip the Host allowlist (CLI >= 2026.7),
+# which otherwise 403s the in-cluster Service name.
+bw serve --hostname all #--disable-origin-protection
