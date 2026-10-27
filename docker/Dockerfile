@@ -1,4 +1,4 @@
-FROM debian:13.1
+FROM debian:13.7
 
 # BW CLI 2026.4.1
 ENV BW_CLI_VERSION=2026.7.0
