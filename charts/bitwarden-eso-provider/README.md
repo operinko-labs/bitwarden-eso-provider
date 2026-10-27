@@ -1,6 +1,6 @@
 # bitwarden-eso-provider
 
-![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.5.0](https://img.shields.io/badge/AppVersion-1.5.0-informational?style=flat-square)
+![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2026.7.0](https://img.shields.io/badge/AppVersion-2026.7.0-informational?style=flat-square)
 
 Helm chart to use Bitwarden as a Provider for External Secrets Operator
 
@@ -33,7 +33,7 @@ Helm chart to use Bitwarden as a Provider for External Secrets Operator
 | bitwarden_eso_provider.create_cluster_secret_store | bool | `true` | if set to True, we'll create a cluster-wide accessible Cluster Secret Store see: https://external-secrets.io/latest/introduction/overview/#clustersecretstore |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` | Overrides the image pullPolicy. Hint: set to Always if using latest tag |
-| image.repository | string | `"jessebot/bweso"` | Overrides the image repository |
+| image.repository | string | `"harbor.vaderrp.com/operinko-labs/bweso"` | Overrides the image repository |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` |  |
 | livenessProbe | object | `{"failureThreshold":30,"initialDelaySeconds":20,"periodSeconds":10,"timeoutSeconds":1}` | The livenessProbe calls the `bw sync` command. |
