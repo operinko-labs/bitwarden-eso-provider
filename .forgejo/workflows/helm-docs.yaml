@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Render helm docs inside the README.md and push changes back to PR branch
-        uses: jessebot/helm-docs-action@0.0.1
+        uses: jessebot/helm-docs-action@4e16a6d545119d443463b9b247057d3727dc9641 # 0.0.1
         with:
           working-dir: charts/bitwarden-eso-provider
           git-push: "true"
